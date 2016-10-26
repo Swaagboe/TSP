@@ -16,7 +16,7 @@ public class Main {
 			cityCoordinates = readFile("Djibouti.txt");			
 		}
 		else if (city.equals("Q")){
-			cityCoordinates = readFile("Quatar.txt");			
+			cityCoordinates = readFile("Qatar.txt");			
 		}
 		else {
 			cityCoordinates = readFile("Uruguay.txt");			
@@ -64,7 +64,7 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		new Main("D");
+		new Main("Q");
 	}
 
 }
