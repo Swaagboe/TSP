@@ -51,7 +51,7 @@ public class HelpMethods {
 			//50 known neighbours available for each Nauron
 			int forward = i+1;
 			int backward = i-1;
-			for (int j = 0; j < 50; j++) {
+			for (int j = 0; j < 2; j++) {
 				if (j%2 == 0){
 					if (forward < nauronList.size()){
 						neighbours.add(nauronList.get(forward));
@@ -140,6 +140,13 @@ public class HelpMethods {
 		return Math.sqrt(Math.pow(latDifference, 2)+Math.pow(longDifference, 2));
 	}
 	
+	public static double calcuLateDistanceBetweenNeurons(Neuron city, Neuron neuron){
+		double latDifference = Math.abs(city.getLatitude()-neuron.getLatitude());
+		double longDifference = Math.abs(city.getLongitude()-neuron.getLongitude());
+		return Math.sqrt(Math.pow(latDifference, 2)+Math.pow(longDifference, 2));
+	}
+
+
 	public static void updateLatLongForNeuron(Neuron neuron, double latDifference, double longDifference, double rate){
 		neuron.setLatitude(rate*(latDifference));
 		neuron.setLongitude(rate*(longDifference));
@@ -168,15 +175,26 @@ public class HelpMethods {
 	    return bestNeuron;
 	}
 
-	public static void drawCities(){
 
-	}
-
-	public static void drawNaurons(){
-
-	}
-
-	public static void totalDist(){
+	public static double totalDist(ArrayList<Neuron> neurons){
+		ArrayList<Neuron> finalRoute = new ArrayList<Neuron>();
+		for(Neuron n : neurons){
+			if(n.isClosest){
+				finalRoute.add(n);
+			}
+		}
+		for(Neuron n : neurons){
+			if(n.isClosest){
+				finalRoute.add(n);
+				break;
+			}
+		}
+		
+		double totalDist = 0;
+		for(int i = 0; i < finalRoute.size()-1 ; i++){
+			totalDist+= HelpMethods.calcuLateDistanceBetweenNeurons(finalRoute.get(i), finalRoute.get(i+1));
+		}
+		return totalDist;
 
 	}
 	
@@ -188,6 +206,10 @@ public class HelpMethods {
 
 	    testFrame.pack();
 	    testFrame.setVisible(true);
+	}
+	
+	public static int toInt(double d){
+		return (int)Math.round(d);
 	}
 
 
