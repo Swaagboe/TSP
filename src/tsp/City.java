@@ -16,6 +16,10 @@ public class City {
 		this.longitude = longitude;
 	}
 	
+	public void addNeuronToDistanceToNeuronList(Neuron neuron, double distance){
+		distanceToNauronsList.put(neuron.getId(), distance);
+	}
+	
 
 	public HashMap<Integer, Double> getDistanceToNauronsList() {
 		return distanceToNauronsList;

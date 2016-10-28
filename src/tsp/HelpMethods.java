@@ -28,7 +28,13 @@ public class HelpMethods {
 		return nauronList;
 	}
 	
-	//public static void initializeDistanceToNeuronsList(ArrayList<City> cityList, ArrayList<Nauron>)
+	public static void initializeDistanceToNeuronsList(ArrayList<City> cityList, ArrayList<Neuron> neuronList){
+		for (City city : cityList) {
+			for (Neuron neuron : neuronList) {
+				double distance = calcuLateDistanceBetweenCityAndNauron(city, neuron);				
+			}
+		}
+	}
 	
 	//generates the neighbours for the different Naurons
 	public static void generateNeigboursForNaurons(ArrayList<Neuron> nauronList){	
