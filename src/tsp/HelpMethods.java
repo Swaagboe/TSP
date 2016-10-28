@@ -147,30 +147,25 @@ public class HelpMethods {
 	
 	public static City pickRandomCity(ArrayList<City> cityList){	
 		int randomCityID = 1 + (int)(Math.random() * cityList.size());
-		return cityList.get(randomCityID);
+		return cityList.get(randomCityID-1);
 	}
 	
 	
 	//finds the neurons closest to the city
-	public static Neuron findNearestNeuron(City city, ArrayList<Neuron> neuronList) throws Exception{
+	public static Neuron findNearestNeuron(City city, boolean findFinal) {
 		HashMap<Neuron, Double> distanceToNeuron = city.getDistanceToNauronsList();
 		Iterator it = distanceToNeuron.entrySet().iterator();
 		double minDistance = Double.MAX_VALUE;
 		Neuron bestNeuron = null;
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
-	        if ((double)pair.getValue() < minDistance){
-	        	minDistance = (double)pair.getValue();
+	        if ((Double)pair.getValue() < minDistance){
+	        	minDistance = (Double)pair.getValue();
 	        	bestNeuron = (Neuron) pair.getKey();
 	        }
 	        it.remove(); // avoids a ConcurrentModificationException
 	    }
-	    if (neuronList.contains(bestNeuron)){
-	    	return bestNeuron;
-	    }
-	    else{
-	    	throw new Exception("Didn't find the neuron");
-	    }
+	    return bestNeuron;
 	}
 
 	public static void drawCities(){
