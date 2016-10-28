@@ -1,5 +1,6 @@
 package tsp;
 
+import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -7,19 +8,21 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 
+import javax.swing.JFrame;
+
 public class HelpMethods {
 	
 	//generates 'numberOfNaurons' random naurons
-	public static LinkedList<Nauron> generateRandomNauronList(int numberOfNaurons, double[] minMaxLatLong){
+	public static LinkedList<Neuron> generateRandomNauronList(int numberOfNaurons, double[] minMaxLatLong){
 		Random r = new Random();
 		double randomLatitude;
 		double randomLongitude;
 		int id = 1;
-		LinkedList<Nauron> nauronList = new LinkedList<Nauron>();
+		LinkedList<Neuron> nauronList = new LinkedList<Neuron>();
 		for (int i = 0; i < numberOfNaurons; i++) {
 			randomLatitude = minMaxLatLong[0] + (minMaxLatLong[1] - minMaxLatLong[0]) * r.nextDouble();
 			randomLongitude = minMaxLatLong[2] + (minMaxLatLong[3] - minMaxLatLong[2]) * r.nextDouble();
-			Nauron n = new Nauron(id, randomLatitude, randomLongitude);
+			Neuron n = new Neuron(id, randomLatitude, randomLongitude);
 			nauronList.add(n);
 			id++;
 		}
@@ -27,7 +30,7 @@ public class HelpMethods {
 	}
 	
 	//generates the neighbours for the different Naurons
-	public static void generateNeigboursForNaurons(ArrayList<Nauron> nauronList){
+	public static void generateNeigboursForNaurons(ArrayList<Neuron> nauronList){
 		
 	}
 	
@@ -84,12 +87,12 @@ public class HelpMethods {
 	}
 	
 	//returns distance between city and nauron
-	public static double calcuLateDistanceBetweenCityAndNauron(City city, Nauron nauron){
+	public static double calcuLateDistanceBetweenCityAndNauron(City city, Neuron nauron){
 		return 0;
 	}
 	
 	//updates the distance HashMap of distances to naurons for all the cities
-	public static void updateDistanceToNauronsForCities(ArrayList<City> cityList, ArrayList<Nauron> nauronList){
+	public static void updateDistanceToNauronsForCities(ArrayList<City> cityList, ArrayList<Neuron> nauronList){
 		
 	}
 	
@@ -103,6 +106,16 @@ public class HelpMethods {
 	
 	public static void totalDist(){
 		
+	}
+	
+	public static void showCurrentMap(ArrayList<Neuron> neurons, ArrayList<City> cities){
+		JFrame testFrame = new JFrame();
+	    testFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		TestGraphics graphic = new TestGraphics(cities, neurons);
+	    testFrame.getContentPane().add(graphic, BorderLayout.CENTER);
+
+	    testFrame.pack();
+	    testFrame.setVisible(true);
 	}
 	
 	
