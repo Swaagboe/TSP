@@ -5,7 +5,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -34,7 +37,8 @@ public class HelpMethods {
 	public static void initializeDistanceToNeuronsList(ArrayList<City> cityList, ArrayList<Neuron> neuronList){
 		for (City city : cityList) {
 			for (Neuron neuron : neuronList) {
-				double distance = calcuLateDistanceBetweenCityAndNauron(city, neuron);				
+				double distance = calcuLateDistanceBetweenCityAndNauron(city, neuron);
+				city.updateDistanceToNeuronList(neuron, distance);
 			}
 		}
 	}
@@ -142,18 +146,40 @@ public class HelpMethods {
 		return Math.sqrt(Math.pow(latDifference, 2)+Math.pow(longDifference, 2));
 	}
 
-	//updates the distance HashMap of distances to naurons for all the cities
-	public static void updateDistanceToNauronsForCities(ArrayList<City> cityList, ArrayList<Neuron> nauronList){
 
+	public static void updateLatLongForNeuron(Neuron neuron, double latDifference, double longDifference, double rate){
+		neuron.setLatitude(rate*(latDifference));
+		neuron.setLongitude(rate*(longDifference));
+	}
+	
+	public static City pickRandomCity(ArrayList<City> cityList){	
+		int randomCityID = 1 + (int)(Math.random() * cityList.size());
+		return cityList.get(randomCityID);
+	}
+	
+	
+	//finds the neurons closest to the city
+	public static Neuron findNearestNeuron(City city, ArrayList<Neuron> neuronList) throws Exception{
+		HashMap<Neuron, Double> distanceToNeuron = city.getDistanceToNauronsList();
+		Iterator it = distanceToNeuron.entrySet().iterator();
+		double minDistance = Double.MAX_VALUE;
+		Neuron bestNeuron = null;
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        if ((double)pair.getValue() < minDistance){
+	        	minDistance = (double)pair.getValue();
+	        	bestNeuron = (Neuron) pair.getKey();
+	        }
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }
+	    if (neuronList.contains(bestNeuron)){
+	    	return bestNeuron;
+	    }
+	    else{
+	    	throw new Exception("Didn't find the neuron");
+	    }
 	}
 
-	public static void drawCities(){
-
-	}
-
-	public static void drawNaurons(){
-
-	}
 
 	public static double totalDist(ArrayList<Neuron> neurons){
 		ArrayList<Neuron> finalRoute = new ArrayList<Neuron>();

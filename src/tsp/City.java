@@ -7,22 +7,27 @@ public class City {
 	private final int id;
 	private final double latitude;
 	private final double longitude;
-	private HashMap<Integer, Double> distanceToNauronsList;
+	private HashMap<Neuron, Double> distanceToNauronsList;
 	
 	
 	public City(int id, double latidude, double longitude){
 		this.id = id;
 		this.latitude = latidude;
 		this.longitude = longitude;
+		distanceToNauronsList = new HashMap<Neuron, Double>();
+	}
+	
+	public void updateDistanceToNeuronList(Neuron neuron, double distance){
+		distanceToNauronsList.put(neuron, distance);
 	}
 	
 
-	public HashMap<Integer, Double> getDistanceToNauronsList() {
+	public HashMap<Neuron, Double> getDistanceToNauronsList() {
 		return distanceToNauronsList;
 	}
 
 
-	public void setDistanceToNauronsList(HashMap<Integer, Double> distanceToNauronsList) {
+	public void setDistanceToNauronsList(HashMap<Neuron, Double> distanceToNauronsList) {
 		this.distanceToNauronsList = distanceToNauronsList;
 	}
 
