@@ -41,6 +41,7 @@ public class TSP {
 		this.maxLong = maxLong;
 		this.minLat = minLat;
 		this.minLong = minLong;
+		
 	}
 
 }
