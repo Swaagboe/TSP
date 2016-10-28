@@ -12,9 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.Polygon;
 
 public class TestGraphics extends JComponent{
 	private final LinkedList<Line> lines = new LinkedList<Line>();
+	private Polygon polygon;
 
 	public void addLine(int x1, int x2, int x3, int x4) {
 	    addLine(x1, x2, x3, x4, Color.black);
@@ -29,6 +31,10 @@ public class TestGraphics extends JComponent{
 	    lines.clear();
 	    repaint();
 	}
+	
+	public void setPolygon(Polygon polygon){
+		this.polygon = polygon;
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -37,6 +43,8 @@ public class TestGraphics extends JComponent{
 	        g.setColor(line.color);
 	        g.drawLine(line.x1, line.y1, line.x2, line.y2);
 	    }
+	    
+	    g.drawPolygon(polygon);
 	}
 	
 	public static void main(String[] args) {
@@ -44,6 +52,10 @@ public class TestGraphics extends JComponent{
 	    testFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    final TestGraphics comp = new TestGraphics();
 	    comp.setPreferredSize(new Dimension(320, 200));
+	    int[] array1 = {1,100,1,100};
+	    int[] array2 = {1,100,100,1};
+	    Polygon p = new Polygon(array1, array2, 4);
+	    comp.setPolygon(p);
 	    testFrame.getContentPane().add(comp, BorderLayout.CENTER);
 	    JPanel buttonsPanel = new JPanel();
 	    JButton newLineButton = new JButton("New Line");
@@ -57,9 +69,9 @@ public class TestGraphics extends JComponent{
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	            int x1 = (int) (Math.random()*320);
-	            int x2 = (int) (Math.random()*320);
+	            int x2 = x1;
 	            int y1 = (int) (Math.random()*200);
-	            int y2 = (int) (Math.random()*200);
+	            int y2 = y1;
 	            Color randomColor = new Color((float)Math.random(), (float)Math.random(), (float)Math.random());
 	            comp.addLine(x1, y1, x2, y2, randomColor);
 	        }
