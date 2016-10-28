@@ -159,29 +159,36 @@ public class HelpMethods {
 	
 	
 	//finds the neurons closest to the city
-	public static Neuron findNearestNeuron(City city, ArrayList<Neuron> neuronList) throws Exception{
+	public static Neuron findNearestNeuron(City city, boolean findFinal){
 		HashMap<Neuron, Double> distanceToNeuron = city.getDistanceToNauronsList();
 		Iterator it = distanceToNeuron.entrySet().iterator();
 		double minDistance = Double.MAX_VALUE;
 		Neuron bestNeuron = null;
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
-	        if ((double)pair.getValue() < minDistance){
-	        	minDistance = (double)pair.getValue();
+	        if ((Double)pair.getValue() < minDistance){
+	        	minDistance = (Double)pair.getValue();
 	        	bestNeuron = (Neuron) pair.getKey();
 	        }
 	        it.remove(); // avoids a ConcurrentModificationException
+	        
+	        
 	    }
-	    if (neuronList.contains(bestNeuron)){
-	    	return bestNeuron;
+	    if(findFinal){
+	    	bestNeuron.isClosest = true;
 	    }
-	    else{
-	    	throw new Exception("Didn't find the neuron");
-	    }
+	    return bestNeuron;
+	}
+	
+	public static void updateIsClosest(ArrayList<City> cities){
+		for(City c : cities){
+			findNearestNeuron(c,true);
+		}
 	}
 
 
-	public static double totalDist(ArrayList<Neuron> neurons){
+	public static double totalDist(ArrayList<Neuron> neurons, ArrayList<City> cities){
+		HelpMethods.updateIsClosest(cities);
 		ArrayList<Neuron> finalRoute = new ArrayList<Neuron>();
 		for(Neuron n : neurons){
 			if(n.isClosest){
