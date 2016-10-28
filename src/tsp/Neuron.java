@@ -15,10 +15,6 @@ public class Neuron {
 		this.longitude = longitude;
 	}
 	
-	public void addNeighbour(Neuron n){
-		neighbours.add(n);
-	}
-	
 	//removes Nauron with id from neighbourlist
 	public void removeNeighbour(int id){
 		for (Neuron n : neighbours) {
@@ -28,6 +24,14 @@ public class Neuron {
 		}
 	}
 
+	public ArrayList<Neuron> getNeighbours() {
+		return neighbours;
+	}
+	
+	public void setNeighbours(ArrayList<Neuron> neighbours) {
+		this.neighbours = neighbours;
+	}
+	
 	public double getLatitude() {
 		return latitude;
 	}

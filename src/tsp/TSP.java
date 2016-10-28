@@ -6,8 +6,8 @@ import java.util.LinkedList;
 public class TSP {
 	
 	//[lat][long]
-	private ArrayList<City> cityList;
-	private LinkedList<Neuron> nauronList;
+	private final ArrayList<City> cityList;
+	private final ArrayList<Neuron> nauronList;
 	private double[] minMaxLatLong;
 	
 	
@@ -16,11 +16,13 @@ public class TSP {
 		this.cityList = HelpMethods.generateCities(map);
 		this.minMaxLatLong = HelpMethods.findMinMaxLatLong(cityList);
 		this.nauronList = HelpMethods.generateRandomNauronList(numberOfNaurons, minMaxLatLong);
+		HelpMethods.generateNeigboursForNaurons(nauronList);
+		System.out.println(nauronList.get(0).getNeighbours());
 	}
 	
 	public static void main(String[] args) {
-		new TSP("Qatar.txt", 100);
-		
+		int numberOfNaurons = 100;
+		new TSP("Qatar.txt", numberOfNaurons);
 		
 	}
 	
@@ -33,8 +35,6 @@ public class TSP {
 		for (Neuron nauron : nauronList) {
 			System.out.println("Id: " + nauron.getId()+" Lat: "+nauron.getLatitude() + " Long: "+nauron.getLongitude());
 		}
-	}
-		
 	}
 
 }
