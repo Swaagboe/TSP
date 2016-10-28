@@ -24,15 +24,15 @@ public class HelpMethods {
 		double randomLongitude;
 		double latCenter = (minMaxLatLong[0]+minMaxLatLong[1])/2;
 		double longCenter = (minMaxLatLong[2]+minMaxLatLong[3])/2;
-		double minLat = latCenter-20;
-		double minLong = longCenter-20;
+		double minLat = latCenter;
+		double minLong = longCenter;
 		int id = 1;
 		ArrayList<Neuron> nauronList = new ArrayList<Neuron>();
 		for (int i = 0; i < numberOfNaurons; i++) {
 //			randomLatitude = minMaxLatLong[0] + (minMaxLatLong[1] - minMaxLatLong[0]) * r.nextDouble();
 //			randomLongitude = minMaxLatLong[2] + (minMaxLatLong[3] - minMaxLatLong[2]) * r.nextDouble();
-			randomLatitude = minLat + 120*r.nextDouble();
-			randomLongitude = minLong + 120*r.nextDouble();
+			randomLatitude = minLat-20 + 40*r.nextDouble();
+			randomLongitude = minLong-20 + 40*r.nextDouble();
 			Neuron n = new Neuron(id, randomLatitude, randomLongitude);
 			nauronList.add(n);
 			id++;
@@ -56,7 +56,7 @@ public class HelpMethods {
 			//50 known neighbours available for each Nauron
 			int forward = i+1;
 			int backward = i-1;
-			for (int j = 0; j < 6; j++) {
+			for (int j = 0; j < 50; j++) {
 				if (j%2 == 0){
 					if (forward < nauronList.size()){
 						neighbours.add(nauronList.get(forward));
@@ -251,6 +251,7 @@ public class HelpMethods {
 		JFrame testFrame = new JFrame();
 	    testFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		TestGraphics graphic = new TestGraphics(cities, neurons);
+		double[] minMaxLatLong = findMinMaxLatLong(cities);
 	    testFrame.getContentPane().add(graphic, BorderLayout.CENTER);
 
 	    testFrame.pack();

@@ -22,39 +22,34 @@ public class TSP {
 		this.cityList = HelpMethods.generateCities(map);
 		this.minMaxLatLong = HelpMethods.findMinMaxLatLong(cityList);
 		this.nauronList = HelpMethods.generateRandomNauronList(numberOfNaurons, minMaxLatLong);
+		HelpMethods.showCurrentMap(nauronList, cityList);
 		HelpMethods.generateNeigboursForNaurons(nauronList);
 		HelpMethods.initializeDistanceToNeuronsList(cityList, nauronList);
+
 		run();
 	}
 	
 	public void run() throws Exception{
 		int iterations = 0;
-		for (Neuron n : nauronList) {
-			System.out.println("Id: " + n.getId() + " Lat: "+n.getLatitude() + " Long: "+n.getLongitude());
-		}
-		System.out.println(nauronList);
-		HelpMethods.showCurrentMap(nauronList, cityList);
+
 		while(iterations<30000){
 			City city = HelpMethods.pickRandomCity(cityList);//velger random city
 			Neuron nearestNeuron = HelpMethods.findNearestNeuron(city, false);//finner nearmest city
 			HelpMethods.updateLatLongForNeuronAndNeighbours(cityList, nearestNeuron, city, learningRate, activeNeighbours);//flytter nauron nearmere by og oppdaterer alle cities med den nye distansen
 			iterations++;	
-//			if(iterations%5000 == 0){
-//				HelpMethods.showCurrentMap(nauronList, cityList);				
-//			}
 		}
 		HelpMethods.showCurrentMap(nauronList, cityList);
 		ArrayList<Neuron> finalNeuronList = HelpMethods.findFinalNeurons(cityList, nauronList);
-		HelpMethods.showCurrentMap(finalNeuronList, cityList);		
+		HelpMethods.showCurrentMap(finalNeuronList, cityList);	
 	}
 	
 	public static void main(String[] args) throws Exception {
-		int numberOfNaurons = 800;
-		double learningRate = 0.2;
+		int numberOfNaurons = 600;
+		double learningRate = 0.5;
 		int activeNeighbours = 4;
 		new TSP("Qatar.txt", numberOfNaurons, learningRate, activeNeighbours);
 //		new TSP("Qatar.txt", numberOfNaurons, learningRate);
-//		new TSP("Uruguay.txt", numberOfNaurons, learningRate);
+//		new TSP("Djibouti.txt", numberOfNaurons, learningRate, activeNeighbours);
 //		new TSP("Djibouti.txt", numberOfNaurons, learningRate);
 		
 	}
