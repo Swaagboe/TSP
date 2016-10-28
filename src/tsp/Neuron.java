@@ -8,6 +8,7 @@ public class Neuron {
 	private double latitude;
 	private double longitude;
 	private ArrayList<Neuron> neighbours;
+	public boolean isClosest;
 	
 	public Neuron(int id, double latitude, double longitude){
 		this.id = id;
