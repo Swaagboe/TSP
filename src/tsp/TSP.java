@@ -1,47 +1,37 @@
 package tsp;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 public class TSP {
 	
 	//[lat][long]
-	private double[][] cityCoordinates;
-	private double maxLat;
-	private double minLat;
-	private double maxLong;
-	private double minLong;
-	private final double INF = Double.MAX_VALUE;
+	private ArrayList<City> cityList;
+	private LinkedList<Nauron> nauronList;
+	private double[] minMaxLatLong;
 	
 	
 	
-	public TSP(double[][] cityCoordinates){
-		this.cityCoordinates = cityCoordinates;
-		findMaxLatLong();
+	public TSP(String map, int numberOfNaurons){
+		this.cityList = HelpMethods.generateCities(map);
+		this.minMaxLatLong = HelpMethods.findMinMaxLatLong(cityList);
+		this.nauronList = HelpMethods.generateRandomNauronList(numberOfNaurons, minMaxLatLong);
 	}
 	
-	public void findMaxLatLong(){
-		double maxLat = -INF;
-		double maxLong = -INF;
-		double minLat = INF;
-		double minLong = INF;		
-		for (int i = 0; i < cityCoordinates.length; i++) {
-			if (cityCoordinates[i][0] > maxLat){
-				maxLat = cityCoordinates[i][0];
-			}
-			if (cityCoordinates[i][1] > maxLong){
-				maxLong = cityCoordinates[i][1]; 
-			}
-			if (cityCoordinates[i][0] < minLat){
-				minLat = cityCoordinates[i][0];
-			}
-			if (cityCoordinates[i][1] < minLong){
-				minLong = cityCoordinates[i][1];
-			}
-			
-		}
-		this.maxLat = maxLat;
-		this.maxLong = maxLong;
-		this.minLat = minLat;
-		this.minLong = minLong;
+	public static void main(String[] args) {
+		new TSP("Qatar.txt", 100);
 		
+	}
+	
+	public void printCityList(ArrayList<City> cityList){
+		for (City cit : cityList) {
+			System.out.println("Id: " + cit.getId()+" Lat: "+cit.getLatitude() + " Long: "+cit.getLongitude());
+		}
+	}
+	public void printNauronList(LinkedList<Nauron> nauronList){
+		for (Nauron nauron : nauronList) {
+			System.out.println("Id: " + nauron.getId()+" Lat: "+nauron.getLatitude() + " Long: "+nauron.getLongitude());
+		}
 	}
 
 }
