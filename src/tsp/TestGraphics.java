@@ -53,7 +53,7 @@ public class TestGraphics extends JComponent{
 	    g.drawPolygon(polygon);
 	    g.setColor(Color.BLACK);
 	    for(Neuron n : neurons){
-	    	g.drawOval((int) Math.round(n.getLatitude()) - minLat, maxLong - ((int)Math.round(n.getLongitude()) - minLong), 3, 3);
+	    	g.drawOval((int)Math.round(n.getLatitude()) - minLat, maxLong - ((int)Math.round(n.getLongitude())- minLong), 3, 3);
 	    }
 	    g.setColor(Color.RED);
 	    for(City c : cities){

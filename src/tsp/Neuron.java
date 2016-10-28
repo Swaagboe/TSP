@@ -53,6 +53,16 @@ public class Neuron {
 		return id;
 	}
 	
+	public void updateLatLong(City city, double rate, ArrayList<City> cityList){
+		double latDifference = city.getLatitude()-this.getLatitude();
+		double longDifference = city.getLongitude()-this.getLongitude();
+		this.setLatitude(latitude+rate*(latDifference));
+		this.setLongitude(longitude+rate*(longDifference));
+		for (City c : cityList) {
+			c.updateDistanceToNeuronList(this);
+		}
+	}
+	
 	
 
 }
