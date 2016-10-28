@@ -154,7 +154,7 @@ public class HelpMethods {
 	
 	public static City pickRandomCity(ArrayList<City> cityList){	
 		int randomCityID = 1 + (int)(Math.random() * cityList.size());
-		return cityList.get(randomCityID);
+		return cityList.get(randomCityID-1);
 	}
 	
 	
