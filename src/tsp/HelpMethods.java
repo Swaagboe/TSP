@@ -159,11 +159,7 @@ public class HelpMethods {
 	
 	
 	//finds the neurons closest to the city
-<<<<<<< HEAD
-	public static Neuron findNearestNeuron(City city, boolean findFinal) {
-=======
 	public static Neuron findNearestNeuron(City city, boolean findFinal){
->>>>>>> master
 		HashMap<Neuron, Double> distanceToNeuron = city.getDistanceToNauronsList();
 		Iterator it = distanceToNeuron.entrySet().iterator();
 		double minDistance = Double.MAX_VALUE;
@@ -178,9 +174,6 @@ public class HelpMethods {
 	        
 	        
 	    }
-<<<<<<< HEAD
-	    return bestNeuron;
-=======
 	    if(findFinal){
 	    	bestNeuron.isClosest = true;
 	    }
@@ -191,7 +184,6 @@ public class HelpMethods {
 		for(City c : cities){
 			findNearestNeuron(c,true);
 		}
->>>>>>> master
 	}
 
 
