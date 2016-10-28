@@ -1,5 +1,6 @@
 package tsp;
 
+import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -7,10 +8,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 
+import javax.swing.JFrame;
+
 import com.sun.media.jai.opimage.NeuQuantOpImage;
 
 public class HelpMethods {
-	
+
 	//generates 'numberOfNeurons' random neurons
 	public static ArrayList<Neuron> generateRandomNauronList(int numberOfNaurons, double[] minMaxLatLong){
 		Random r = new Random();
@@ -27,7 +30,7 @@ public class HelpMethods {
 		}	
 		return nauronList;
 	}
-	
+
 	public static void initializeDistanceToNeuronsList(ArrayList<City> cityList, ArrayList<Neuron> neuronList){
 		for (City city : cityList) {
 			for (Neuron neuron : neuronList) {
@@ -35,7 +38,7 @@ public class HelpMethods {
 			}
 		}
 	}
-	
+
 	//generates the neighbours for the different Naurons
 	public static void generateNeigboursForNaurons(ArrayList<Neuron> nauronList){	
 		for (int i = 0; i < nauronList.size(); i++) {
@@ -66,14 +69,14 @@ public class HelpMethods {
 			}
 			n.setNeighbours(neighbours);
 			/*System.out.println("NEURON : "+n.getId());
-			System.out.println("Neighbours: ");
-			for (int j = 0; j < 50; j++) {
-				System.out.print(neighbours.get(j).getId()+", ");
-			}
-			System.out.println();*/
+				System.out.println("Neighbours: ");
+				for (int j = 0; j < 50; j++) {
+					System.out.print(neighbours.get(j).getId()+", ");
+				}
+				System.out.println();*/
 		}
 	}
-	
+
 	//generates cityList from txt-file
 	public static ArrayList<City> generateCities(String file){
 		ArrayList<City> cityList;
@@ -100,7 +103,7 @@ public class HelpMethods {
 
 		return null;
 	}
-	
+
 	//returns list like this [minLat, maxLat, minLong, maxLong]
 	public static double[] findMinMaxLatLong(ArrayList<City> cityList){
 		double[] minMaxList = new double[4];
@@ -125,31 +128,43 @@ public class HelpMethods {
 		}
 		return minMaxList;
 	}
-	
+
 	//returns distance between city and nauron
 	public static double calcuLateDistanceBetweenCityAndNauron(City city, Neuron neuron){
 		double latDifference = Math.abs(city.getLatitude()-neuron.getLatitude());
 		double longDifference = Math.abs(city.getLongitude()-neuron.getLongitude());
 		return Math.sqrt(Math.pow(latDifference, 2)+Math.pow(longDifference, 2));
 	}
-	
+
 	//updates the distance HashMap of distances to naurons for all the cities
 	public static void updateDistanceToNauronsForCities(ArrayList<City> cityList, ArrayList<Neuron> nauronList){
-		
+
 	}
-	
+
 	public static void drawCities(){
-		
+
 	}
-	
+
 	public static void drawNaurons(){
-		
+
 	}
-	
+
 	public static void totalDist(){
-		
+
 	}
 	
-	
+	public static void showCurrentMap(ArrayList<Neuron> neurons, ArrayList<City> cities){
+		JFrame testFrame = new JFrame();
+	    testFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		TestGraphics graphic = new TestGraphics(cities, neurons);
+	    testFrame.getContentPane().add(graphic, BorderLayout.CENTER);
+
+	    testFrame.pack();
+	    testFrame.setVisible(true);
+	}
+
+
+
+
 
 }
