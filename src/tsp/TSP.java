@@ -12,11 +12,13 @@ public class TSP {
 	private final ArrayList<Neuron> nauronList;
 	private double[] minMaxLatLong;
 	private double learningRate;
+	private int activeNeighbours;
 	
 	
 	
-	public TSP(String map, int numberOfNaurons, double learningRate) throws Exception{
+	public TSP(String map, int numberOfNaurons, double learningRate, int activeNeighbours) throws Exception{
 		this.learningRate = learningRate;
+		this.activeNeighbours = activeNeighbours;
 		this.cityList = HelpMethods.generateCities(map);
 		this.minMaxLatLong = HelpMethods.findMinMaxLatLong(cityList);
 		this.nauronList = HelpMethods.generateRandomNauronList(numberOfNaurons, minMaxLatLong);
@@ -27,35 +29,30 @@ public class TSP {
 	
 	public void run() throws Exception{
 		int iterations = 0;
-		while(iterations<10000){
-			City city = HelpMethods.pickRandomCity(cityList);
-			Neuron nearestNeuron = HelpMethods.findNearestNeuron(city, false);
-			double latDifference = city.getLatitude()-nearestNeuron.getLatitude();
-			double longDifference = city.getLongitude()-nearestNeuron.getLongitude();
-			HelpMethods.updateLatLongForNeuron(nearestNeuron, latDifference, longDifference, learningRate);
-			double newDistance = HelpMethods.calcuLateDistanceBetweenCityAndNauron(city, nearestNeuron);
-			city.updateDistanceToNeuronList(nearestNeuron, newDistance);
-			
-			int neighbourRadius = 4;
-			ArrayList<Neuron> neighbours = nearestNeuron.getNeighbours();
-			double rate = learningRate;
-			for (int i = 0; i < neighbourRadius; i++) {
-				Neuron neigbourNeuron = neighbours.get(i);
-				latDifference = city.getLatitude()-neigbourNeuron.getLatitude();
-				longDifference = city.getLongitude()-neigbourNeuron.getLongitude();
-				HelpMethods.updateLatLongForNeuron(nearestNeuron, latDifference, longDifference, rate/2);
-				rate = rate/2;
-				newDistance = HelpMethods.calcuLateDistanceBetweenCityAndNauron(city, neigbourNeuron);
-				city.updateDistanceToNeuronList(neigbourNeuron, newDistance);
-			}
-			iterations++;		
+		for (Neuron n : nauronList) {
+			System.out.println("Id: " + n.getId() + " Lat: "+n.getLatitude() + " Long: "+n.getLongitude());
 		}
+		System.out.println(nauronList);
+		HelpMethods.showCurrentMap(nauronList, cityList);
+		while(iterations<30000){
+			City city = HelpMethods.pickRandomCity(cityList);//velger random city
+			Neuron nearestNeuron = HelpMethods.findNearestNeuron(city, false);//finner nearmest city
+			HelpMethods.updateLatLongForNeuronAndNeighbours(cityList, nearestNeuron, city, learningRate, activeNeighbours);//flytter nauron nearmere by og oppdaterer alle cities med den nye distansen
+			iterations++;	
+//			if(iterations%5000 == 0){
+//				HelpMethods.showCurrentMap(nauronList, cityList);				
+//			}
+		}
+		HelpMethods.showCurrentMap(nauronList, cityList);
+		ArrayList<Neuron> finalNeuronList = HelpMethods.findFinalNeurons(cityList, nauronList);
+		HelpMethods.showCurrentMap(finalNeuronList, cityList);		
 	}
 	
 	public static void main(String[] args) throws Exception {
-		int numberOfNaurons = 100;
+		int numberOfNaurons = 800;
 		double learningRate = 0.2;
-		new TSP("Westers_Sahara.txt", numberOfNaurons, learningRate);
+		int activeNeighbours = 4;
+		new TSP("Qatar.txt", numberOfNaurons, learningRate, activeNeighbours);
 //		new TSP("Qatar.txt", numberOfNaurons, learningRate);
 //		new TSP("Uruguay.txt", numberOfNaurons, learningRate);
 //		new TSP("Djibouti.txt", numberOfNaurons, learningRate);

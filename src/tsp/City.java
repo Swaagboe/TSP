@@ -17,7 +17,8 @@ public class City {
 		distanceToNauronsList = new HashMap<Neuron, Double>();
 	}
 	
-	public void updateDistanceToNeuronList(Neuron neuron, double distance){
+	public void updateDistanceToNeuronList(Neuron neuron){
+		double distance = HelpMethods.calcuLateDistanceBetweenCityAndNauron(this, neuron);
 		distanceToNauronsList.put(neuron, distance);
 	}
 	

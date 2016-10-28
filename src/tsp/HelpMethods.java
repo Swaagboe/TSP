@@ -22,11 +22,17 @@ public class HelpMethods {
 		Random r = new Random();
 		double randomLatitude;
 		double randomLongitude;
+		double latCenter = (minMaxLatLong[0]+minMaxLatLong[1])/2;
+		double longCenter = (minMaxLatLong[2]+minMaxLatLong[3])/2;
+		double minLat = latCenter-20;
+		double minLong = longCenter-20;
 		int id = 1;
 		ArrayList<Neuron> nauronList = new ArrayList<Neuron>();
 		for (int i = 0; i < numberOfNaurons; i++) {
-			randomLatitude = minMaxLatLong[0] + (minMaxLatLong[1] - minMaxLatLong[0]) * r.nextDouble();
-			randomLongitude = minMaxLatLong[2] + (minMaxLatLong[3] - minMaxLatLong[2]) * r.nextDouble();
+//			randomLatitude = minMaxLatLong[0] + (minMaxLatLong[1] - minMaxLatLong[0]) * r.nextDouble();
+//			randomLongitude = minMaxLatLong[2] + (minMaxLatLong[3] - minMaxLatLong[2]) * r.nextDouble();
+			randomLatitude = minLat + 120*r.nextDouble();
+			randomLongitude = minLong + 120*r.nextDouble();
 			Neuron n = new Neuron(id, randomLatitude, randomLongitude);
 			nauronList.add(n);
 			id++;
@@ -37,8 +43,7 @@ public class HelpMethods {
 	public static void initializeDistanceToNeuronsList(ArrayList<City> cityList, ArrayList<Neuron> neuronList){
 		for (City city : cityList) {
 			for (Neuron neuron : neuronList) {
-				double distance = calcuLateDistanceBetweenCityAndNauron(city, neuron);
-				city.updateDistanceToNeuronList(neuron, distance);
+				city.updateDistanceToNeuronList(neuron);
 			}
 		}
 	}
@@ -51,7 +56,7 @@ public class HelpMethods {
 			//50 known neighbours available for each Nauron
 			int forward = i+1;
 			int backward = i-1;
-			for (int j = 0; j < 2; j++) {
+			for (int j = 0; j < 6; j++) {
 				if (j%2 == 0){
 					if (forward < nauronList.size()){
 						neighbours.add(nauronList.get(forward));
@@ -147,10 +152,23 @@ public class HelpMethods {
 	}
 
 
-	public static void updateLatLongForNeuron(Neuron neuron, double latDifference, double longDifference, double rate){
-		neuron.setLatitude(rate*(latDifference));
-		neuron.setLongitude(rate*(longDifference));
+	public static void updateLatLongForNeuronAndNeighbours(ArrayList<City> cityList, 
+			Neuron neuron, City city, double rate, int activeNeighbours){
+		
+		neuron.updateLatLong(city, rate, cityList);
+		ArrayList<Neuron> neighbours = neuron.getNeighbours();
+		int x = 0;
+		for (int i = 0; i < activeNeighbours; i++) {
+			neighbours.get(i).updateLatLong(city, rate/2, cityList);
+			if (x%2 == 1){
+				rate = rate/2;
+			}
+			x++;
+
+		}
+		
 	}
+		
 	
 	public static City pickRandomCity(ArrayList<City> cityList){	
 		int randomCityID = 1 + (int)(Math.random() * cityList.size());
@@ -170,7 +188,7 @@ public class HelpMethods {
 	        	minDistance = (Double)pair.getValue();
 	        	bestNeuron = (Neuron) pair.getKey();
 	        }
-	        it.remove(); // avoids a ConcurrentModificationException
+	        //it.remove(); // avoids a ConcurrentModificationException
 	        
 	        
 	    }
@@ -184,6 +202,25 @@ public class HelpMethods {
 		for(City c : cities){
 			findNearestNeuron(c,true);
 		}
+	}
+	
+	public static ArrayList<Neuron> findFinalNeurons(ArrayList<City> cities, ArrayList<Neuron> neurons) {
+		updateIsClosest(cities);
+		ArrayList<Neuron> finalRoute = new ArrayList<Neuron>();
+		for(Neuron n : neurons){
+			if(n.isClosest){
+				finalRoute.add(n);
+			}
+		}
+		for(Neuron n : neurons){
+			if(n.isClosest){
+				finalRoute.add(n);
+				break;
+			}
+		}
+	        
+		return finalRoute;
+		
 	}
 
 
