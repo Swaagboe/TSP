@@ -97,18 +97,6 @@ public class TSP {
 	
 	public void run() throws Exception{
 		int iterations = 0;
-<<<<<<< HEAD
-		for (Neuron n : nauronList) {
-			System.out.println("Id: " + n.getId() + " Lat: "+n.getLatitude() + " Long: "+n.getLongitude());
-		}
-		System.out.println(nauronList);
-		HelpMethods.showCurrentMap(nauronList, cityList);
-		while(iterations<30000){
-			if (activeNeighbours > 4 && iterations%300 == 0){
-				activeNeighbours -= 4;
-				HelpMethods.showCurrentMap(nauronList, cityList);
-=======
-
 		while(iterations<nrOfIterations){
 			if (decayAlternative == LINEAR){
 				if (learningRate > 0.1 && iterations%150 == 0){
@@ -129,7 +117,6 @@ public class TSP {
 			if (iterations%(nrOfIterations/4)==0){
 				HelpMethods.showCurrentMap(nauronList, cityList, scalesForPrint, false);
 				
->>>>>>> Martin
 			}
 			City city = HelpMethods.pickRandomCity(cityList);//velger random city
 			Neuron nearestNeuron = HelpMethods.findNearestNeuron(city, false);//finner nearmest city
@@ -144,18 +131,11 @@ public class TSP {
 	}
 	
 	public static void main(String[] args) throws Exception {
-<<<<<<< HEAD
-		int numberOfNaurons = 800;
-		double learningRate = 0.8;
-		int activeNeighbours = 100;
-		new TSP("Qatar.txt", numberOfNaurons, learningRate, activeNeighbours);
-=======
 		int STATIC = 0;
 		int LINEAR = 1;
 		int EXPONENTIAL = 2;
 		
 		new TSP("Qatar.txt", LINEAR);
->>>>>>> Martin
 //		new TSP("Qatar.txt", numberOfNaurons, learningRate);
 //		new TSP("Djibouti.txt", numberOfNaurons, learningRate, activeNeighbours);
 //		new TSP("Djibouti.txt", numberOfNaurons, learningRate);
