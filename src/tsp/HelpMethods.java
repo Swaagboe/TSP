@@ -24,15 +24,21 @@ public class HelpMethods {
 		double randomLongitude;
 		double latCenter = (minMaxLatLong[0]+minMaxLatLong[1])/2;
 		double longCenter = (minMaxLatLong[2]+minMaxLatLong[3])/2;
-		double minLat = latCenter-20;
-		double minLong = longCenter-20;
+		double minLat = latCenter;
+		double minLong = longCenter;
 		int id = 1;
 		ArrayList<Neuron> nauronList = new ArrayList<Neuron>();
 		for (int i = 0; i < numberOfNaurons; i++) {
 //			randomLatitude = minMaxLatLong[0] + (minMaxLatLong[1] - minMaxLatLong[0]) * r.nextDouble();
 //			randomLongitude = minMaxLatLong[2] + (minMaxLatLong[3] - minMaxLatLong[2]) * r.nextDouble();
+<<<<<<< HEAD
 			randomLatitude = minLat + 120*r.nextDouble();
 			randomLongitude = minLong + 120*r.nextDouble();
+=======
+			randomLatitude = minLat-1 + 2*r.nextDouble();
+			randomLongitude = minLong-1 + 2*r.nextDouble();
+//			Neuron n = new Neuron(id, randomLatitude, randomLongitude);
+>>>>>>> Martin
 			Neuron n = new Neuron(id, latCenter, longCenter);
 			nauronList.add(n);
 			id++;
@@ -56,7 +62,11 @@ public class HelpMethods {
 			//50 known neighbours available for each Nauron
 			int forward = i+1;
 			int backward = i-1;
+<<<<<<< HEAD
 			for (int j = 0; j < 150; j++) {
+=======
+			for (int j = 0; j < 200; j++) {
+>>>>>>> Martin
 				if (j%2 == 0){
 					if (forward < nauronList.size()){
 						neighbours.add(nauronList.get(forward));
@@ -146,22 +156,28 @@ public class HelpMethods {
 	}
 	
 	public static double calcuLateDistanceBetweenNeurons(Neuron city, Neuron neuron){
-		double latDifference = Math.abs(city.getLatitude()-neuron.getLatitude());
-		double longDifference = Math.abs(city.getLongitude()-neuron.getLongitude());
+		double latDifference = Math.abs(city.isClosest.getLatitude()-neuron.isClosest.getLatitude());
+		double longDifference = Math.abs(city.isClosest.getLongitude()-neuron.isClosest.getLongitude());
 		return Math.sqrt(Math.pow(latDifference, 2)+Math.pow(longDifference, 2));
 	}
 
 
 	public static void updateLatLongForNeuronAndNeighbours(ArrayList<City> cityList, 
-			Neuron neuron, City city, double rate, int activeNeighbours){
+			Neuron neuron, City city, double rate, int activeNeighbours, double discountRate){
 		
 		neuron.updateLatLong(city, rate, cityList);
 		ArrayList<Neuron> neighbours = neuron.getNeighbours();
 		int x = 0;
 		for (int i = 0; i < activeNeighbours; i++) {
+<<<<<<< HEAD
 			neighbours.get(i).updateLatLong(city, rate*0.9, cityList);
 			if (x%2 == 1){
 				rate *=0.9;
+=======
+			neighbours.get(i).updateLatLong(city, rate*discountRate, cityList);
+			if (x%2 == 1){
+				rate = rate*discountRate;
+>>>>>>> Martin
 			}
 			x++;
 
@@ -182,18 +198,28 @@ public class HelpMethods {
 		Iterator it = distanceToNeuron.entrySet().iterator();
 		double minDistance = Double.MAX_VALUE;
 		Neuron bestNeuron = null;
-	    while (it.hasNext()) {
+		while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
-	        if ((Double)pair.getValue() < minDistance){
-	        	minDistance = (Double)pair.getValue();
-	        	bestNeuron = (Neuron) pair.getKey();
+	        Neuron n = (Neuron) pair.getKey();
+	        if(!findFinal){
+		        if ((Double)pair.getValue() < minDistance){
+		        	minDistance = (Double)pair.getValue();
+		        	bestNeuron = (Neuron) pair.getKey();
+		        }
 	        }
-	        //it.remove(); // avoids a ConcurrentModificationException
-	        
+	        else{
+		        if ((Double)pair.getValue() < minDistance && n.isClosest == null){
+		        	minDistance = (Double)pair.getValue();
+		        	bestNeuron = (Neuron) pair.getKey();
+	        }
+	        }
+	        //it.remove(); // avoids a ConcurrentModificationException  
 	        
 	    }
 	    if(findFinal){
-	    	bestNeuron.isClosest = true;
+	    	bestNeuron.isClosest = city;
+//	    	bestNeuron.setLatitude(city.getLatitude());
+//	    	bestNeuron.setLatitude(city.getLongitude());
 	    }
 	    return bestNeuron;
 	}
@@ -208,14 +234,8 @@ public class HelpMethods {
 		updateIsClosest(cities);
 		ArrayList<Neuron> finalRoute = new ArrayList<Neuron>();
 		for(Neuron n : neurons){
-			if(n.isClosest){
+			if(n.isClosest != null){
 				finalRoute.add(n);
-			}
-		}
-		for(Neuron n : neurons){
-			if(n.isClosest){
-				finalRoute.add(n);
-				break;
 			}
 		}
 	        
@@ -228,12 +248,12 @@ public class HelpMethods {
 		HelpMethods.updateIsClosest(cities);
 		ArrayList<Neuron> finalRoute = new ArrayList<Neuron>();
 		for(Neuron n : neurons){
-			if(n.isClosest){
+			if(n.isClosest != null){
 				finalRoute.add(n);
 			}
 		}
 		for(Neuron n : neurons){
-			if(n.isClosest){
+			if(n.isClosest != null){
 				finalRoute.add(n);
 				break;
 			}
@@ -247,10 +267,11 @@ public class HelpMethods {
 
 	}
 	
-	public static void showCurrentMap(ArrayList<Neuron> neurons, ArrayList<City> cities){
+	public static void showCurrentMap(ArrayList<Neuron> neurons, ArrayList<City> cities, double[] scalesForPrint, boolean isLastPrint){
 		JFrame testFrame = new JFrame();
 	    testFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		TestGraphics graphic = new TestGraphics(cities, neurons);
+		TestGraphics graphic = new TestGraphics(cities, neurons, scalesForPrint, isLastPrint);
+		double[] minMaxLatLong = findMinMaxLatLong(cities);
 	    testFrame.getContentPane().add(graphic, BorderLayout.CENTER);
 
 	    testFrame.pack();
