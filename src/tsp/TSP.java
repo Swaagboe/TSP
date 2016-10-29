@@ -35,6 +35,10 @@ public class TSP {
 		System.out.println(nauronList);
 		HelpMethods.showCurrentMap(nauronList, cityList);
 		while(iterations<30000){
+			if (activeNeighbours > 4 && iterations%300 == 0){
+				activeNeighbours -= 4;
+				HelpMethods.showCurrentMap(nauronList, cityList);
+			}
 			City city = HelpMethods.pickRandomCity(cityList);//velger random city
 			Neuron nearestNeuron = HelpMethods.findNearestNeuron(city, false);//finner nearmest city
 			HelpMethods.updateLatLongForNeuronAndNeighbours(cityList, nearestNeuron, city, learningRate, activeNeighbours);//flytter nauron nearmere by og oppdaterer alle cities med den nye distansen
@@ -50,8 +54,8 @@ public class TSP {
 	
 	public static void main(String[] args) throws Exception {
 		int numberOfNaurons = 800;
-		double learningRate = 0.2;
-		int activeNeighbours = 4;
+		double learningRate = 0.8;
+		int activeNeighbours = 100;
 		new TSP("Qatar.txt", numberOfNaurons, learningRate, activeNeighbours);
 //		new TSP("Qatar.txt", numberOfNaurons, learningRate);
 //		new TSP("Uruguay.txt", numberOfNaurons, learningRate);
