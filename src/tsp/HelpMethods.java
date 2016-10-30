@@ -31,8 +31,8 @@ public class HelpMethods {
 		for (int i = 0; i < numberOfNaurons; i++) {
 //			randomLatitude = minMaxLatLong[0] + (minMaxLatLong[1] - minMaxLatLong[0]) * r.nextDouble();
 //			randomLongitude = minMaxLatLong[2] + (minMaxLatLong[3] - minMaxLatLong[2]) * r.nextDouble();
-			randomLatitude = minLat-1 + 2*r.nextDouble();
-			randomLongitude = minLong-1 + 2*r.nextDouble();
+			randomLatitude = minLat+2300;
+			randomLongitude = minLong+300;
 //			Neuron n = new Neuron(id, randomLatitude, randomLongitude);
 			Neuron n = new Neuron(id, latCenter, longCenter);
 			nauronList.add(n);
@@ -57,7 +57,7 @@ public class HelpMethods {
 			//50 known neighbours available for each Nauron
 			int forward = i+1;
 			int backward = i-1;
-			for (int j = 0; j < 200; j++) {
+			for (int j = 0; j < 700; j++) {
 				if (j%2 == 0){
 					if (forward < nauronList.size()){
 						neighbours.add(nauronList.get(forward));

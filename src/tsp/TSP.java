@@ -65,24 +65,31 @@ public class TSP {
 		if(map.equals("Qatar.txt")){
 			scalesForPrint = new double[]{0.45,0.45,4,8};
 			numberOfNaurons = 776;
-			this.learningRate = 0.5;
-			this.activeNeighbours = 100;
+			this.learningRate = 0.9;
+			this.activeNeighbours = 148;
 			this.discountRate = 0.9;
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
-			this.lambdaLR = Math.log(0.1/initialLearningRate)/-1000;
-			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-1000;
-			this.learningLinearDecrease = 0.00000;
+			this.lambdaLR = Math.log(0.1/initialLearningRate)/-15000;
+			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-15000;
+			this.learningLinearDecrease = 0;
 			this.activeNLinDecrease = 4;
 			this.nrOfIterations = 30000;
 
 		}
 		if(map.equals("Uruguay.txt")){
-			scalesForPrint = new double[4];
-			scalesForPrint[0] = 0.1;
-			scalesForPrint[1] = 0.1;
-			scalesForPrint[2] = 20;
-			scalesForPrint[3] = 40;
+			scalesForPrint = new double[]{0.20,0.12,9,18};
+			numberOfNaurons = 4000;
+			this.learningRate = 0.9;
+			this.activeNeighbours = 300;
+			this.discountRate = 0.99;
+			this.initialLearningRate = learningRate;
+			this.initialActiveNeighbours = activeNeighbours;
+			this.lambdaLR = Math.log(0.1/initialLearningRate)/-15000;
+			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-15000;
+			this.learningLinearDecrease = 0;
+			this.activeNLinDecrease = 4;
+			this.nrOfIterations = 30000;
 		}
 		
 		this.cityList = HelpMethods.generateCities(map);
@@ -115,9 +122,12 @@ public class TSP {
 					activeNeighbours = (int) (initialActiveNeighbours*Math.exp(-lambdaAN*iterations));
 				}
 			}
-			if (iterations%(nrOfIterations/4)==0){
+			if (iterations%(nrOfIterations/8)==0){
 				HelpMethods.showCurrentMap(nauronList, cityList, scalesForPrint, false);
 				
+			}
+			if (iterations%500==0){
+				System.out.println(iterations);
 			}
 			City city = HelpMethods.pickRandomCity(cityList);//velger random city
 			Neuron nearestNeuron = HelpMethods.findNearestNeuron(city, false);//finner nearmest city
@@ -136,7 +146,7 @@ public class TSP {
 		int LINEAR = 1;
 		int EXPONENTIAL = 2;
 		
-		new TSP("Qatar.txt", LINEAR);
+		new TSP("Uruguay.txt", EXPONENTIAL);
 //		new TSP("Qatar.txt", numberOfNaurons, learningRate);
 //		new TSP("Djibouti.txt", numberOfNaurons, learningRate, activeNeighbours);
 //		new TSP("Djibouti.txt", numberOfNaurons, learningRate);
