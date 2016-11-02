@@ -209,6 +209,12 @@ public class HelpMethods {
 	    return bestNeuron;
 	}
 	
+	public static void setAllIsClosestNeuronsToNullForAllNeurons(ArrayList<Neuron> neuronList){
+		for (Neuron neuron : neuronList) {
+			neuron.isClosest = null;
+		}
+	}
+	
 	public static void updateIsClosest(ArrayList<City> cities){
 		for(City c : cities){
 			findNearestNeuron(c,true);
@@ -255,7 +261,7 @@ public class HelpMethods {
 	public static void showCurrentMap(ArrayList<Neuron> neurons, ArrayList<City> cities, double[] scalesForPrint, boolean isLastPrint){
 		JFrame testFrame = new JFrame();
 	    testFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		TestGraphics graphic = new TestGraphics(cities, neurons, scalesForPrint, isLastPrint);
+		TSPGraphics graphic = new TSPGraphics(cities, neurons, scalesForPrint, isLastPrint);
 		double[] minMaxLatLong = findMinMaxLatLong(cities);
 	    testFrame.getContentPane().add(graphic, BorderLayout.CENTER);
 

@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 
 import java.awt.Polygon;
 
-public class TestGraphics extends JComponent{
+public class TSPGraphics extends JComponent{
 	private final LinkedList<Line> lines = new LinkedList<Line>();
 	private Polygon polygon;
 	private ArrayList<City> cities;
@@ -36,7 +36,7 @@ public class TestGraphics extends JComponent{
 	private int centerLong;
 	
 	
-	public TestGraphics(ArrayList<City> cities, ArrayList<Neuron> neurons, double[] scaleForPrint, boolean isLastPrint){
+	public TSPGraphics(ArrayList<City> cities, ArrayList<Neuron> neurons, double[] scaleForPrint, boolean isLastPrint){
 		int[] a = {};
 		int[] b = {};
 		double[] minMax = HelpMethods.findMinMaxLatLong(cities);
