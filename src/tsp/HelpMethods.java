@@ -57,7 +57,7 @@ public class HelpMethods {
 			//50 known neighbours available for each Nauron
 			int forward = i+1;
 			int backward = i-1;
-			for (int j = 0; j < 700; j++) {
+			for (int j = 0; j < nauronList.size(); j++) {
 				if (j%2 == 0){
 					if (forward < nauronList.size()){
 						neighbours.add(nauronList.get(forward));

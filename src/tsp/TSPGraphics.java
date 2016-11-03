@@ -79,14 +79,14 @@ public class TSPGraphics extends JComponent{
 	
 	public void addNeuronsToRing(ArrayList<Neuron> neurons) {
 		for(Neuron n : neurons){
-			this.polygon.addPoint((int)Math.round(n.getLatitude()) - minLat+400, ((int)Math.round(n.getLongitude())- minLong)-400);		
+			this.polygon.addPoint((int)Math.round(n.getLatitude()) - minLat+(int)scaleForPrint[4], ((int)Math.round(n.getLongitude())- minLong)-(int)scaleForPrint[4]);		
 		}
 		
 	}
 	
 	public void addNeuronsToFinalRing(ArrayList<Neuron> neurons) {
 		for(Neuron n : neurons){
-			this.polygon.addPoint((int)Math.round(n.isClosest.getLatitude()) - minLat+400, ((int)Math.round(n.isClosest.getLongitude())- minLong)-400);		
+			this.polygon.addPoint((int)Math.round(n.isClosest.getLatitude()) - minLat+(int)scaleForPrint[4], ((int)Math.round(n.isClosest.getLongitude())- minLong)-(int)scaleForPrint[4]);		
 		}
 		
 	}
@@ -109,18 +109,18 @@ public class TSPGraphics extends JComponent{
 	    gr.rotate(Math.toRadians(90), centerLat, centerLong);
 	    gr.draw(mirrorAlongX(polygon.getBounds2D().getCenterX(), polygon));
 	    //gr.drawPolygon(polygon);
-	    gr.setColor(Color.GREEN);
+	    gr.setColor(Color.BLUE);
 	    for(int i = 0 ; i < neuronFixList.size() ; i++){
 	    	int y = neuronFixList.get(i).get(0);
 	    	int x = neuronFixList.get(i).get(1);
-	    	gr.fillOval(2*centerLat-(y - minLat)+400,  (x- minLong)-400, (int) scaleForPrint[2], (int)scaleForPrint[2]);
+	    	gr.fillOval(2*centerLat-(y - minLat)+(int)scaleForPrint[4],  (x- minLong)-(int)scaleForPrint[4], (int) scaleForPrint[2], (int)scaleForPrint[2]);
 	    }
 	    gr.setColor(Color.RED);
 	    for(int t = 0 ; t < cityFixList.size() ; t++){
 	    	int a = cityFixList.get(t).get(0);
 	    	int b = cityFixList.get(t).get(1);
 
-	    	gr.fillOval(2*centerLat-(a - minLat)+400,  (b- minLong)-400, (int) scaleForPrint[3], (int) scaleForPrint[3]);
+	    	gr.fillOval(2*centerLat-(a - minLat)+(int)scaleForPrint[4],  (b- minLong)-(int)scaleForPrint[4], (int) scaleForPrint[3], (int) scaleForPrint[3]);
 	    }
 
 

@@ -38,64 +38,67 @@ public class TSP {
 		this.stepsForPrint = stepsForPrint;
 		int numberOfNaurons = 0;
 		if(map.equals("Westers_Sahara.txt")){
-			scalesForPrint = new double[]{0.1,0.1,20,40};
+			scalesForPrint = new double[]{0.1,0.1,30,60,400};
 			numberOfNaurons = 150;
 			this.learningRate = 0.5;
 			this.activeNeighbours = 48;
 			this.activeNLinDecrease = 2;
-			this.nrOfIterations = 2000;
+			this.nrOfIterations = 10000;
 			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
-			this.lambdaLR = Math.log(0.1/initialLearningRate)/-1000;
-			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-1000;
-			this.learningLinearDecrease = (learningRate-0.1)/15000;
+			this.lambdaLR = Math.log(0.1/initialLearningRate)/(-nrOfIterations/2);
+			this.lambdaAN = Math.log((double)4/initialActiveNeighbours)/(-nrOfIterations/2);
+			
+			this.learningLinearDecrease = (learningRate-0.1)/(nrOfIterations/2);
 		}
 		if(map.equals("Djibouti.txt")){
-			scalesForPrint = new double[]{0.4,0.4,6,12};
-			numberOfNaurons = 150;
-			this.learningRate = 0.2;
+			scalesForPrint = new double[]{0.4,0.4,6,12, 200};
+			numberOfNaurons = 200;
+			this.learningRate = 0.9;
 			this.activeNeighbours = 48;
 			this.activeNLinDecrease = 2;
-			this.nrOfIterations = 2000;
+			this.nrOfIterations = 20000;
 			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
-			this.lambdaLR = Math.log(0.1/initialLearningRate)/-1000;
-			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-1000;
-			this.learningLinearDecrease = (learningRate-0.1)/15000;
+			this.lambdaLR = Math.log(0.1/initialLearningRate)/-(nrOfIterations/2);
+			this.lambdaAN = Math.log((double)4/initialActiveNeighbours)/-(nrOfIterations/2);
+			this.learningLinearDecrease = (learningRate-0.1)/(nrOfIterations/2);
 
 		}
 		if(map.equals("Qatar.txt")){
-			scalesForPrint = new double[]{0.45,0.45,4,8};
+			scalesForPrint = new double[]{0.45,0.45,4,8,400};
 			numberOfNaurons = 776;
 			this.learningRate = 0.9;
-			this.activeNeighbours = 50;
+			this.activeNeighbours = 92;
 			this.activeNLinDecrease = 2;
 			this.nrOfIterations = 30000;
 			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
-			this.lambdaLR = Math.log(0.1/initialLearningRate)/-15000;
-			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-15000;
-			this.learningLinearDecrease = (learningRate-0.1)/15000;
+			this.lambdaLR = Math.log(0.1/initialLearningRate)/-(nrOfIterations/2);
+			this.lambdaAN = Math.log((double)4/initialActiveNeighbours)/-(nrOfIterations/2);
+			this.learningLinearDecrease = (learningRate-0.1)/(nrOfIterations/2);
 
 		}
 		if(map.equals("Uruguay.txt")){
-			scalesForPrint = new double[]{0.20,0.12,9,18};
+			scalesForPrint = new double[]{0.20,0.12,9,18,400};
 			numberOfNaurons = 3000;
-			this.learningRate = 0.9;
-			this.activeNeighbours = 386;
-			this.activeNLinDecrease = 2;
+			this.learningRate = 0.5;
+			this.activeNeighbours = 4;
+			this.activeNLinDecrease = 300;
 			this.nrOfIterations = 30000;
 			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
-			this.lambdaLR = Math.log(0.1/initialLearningRate)/-15000;
-			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-15000;
-			this.learningLinearDecrease = (learningRate-0.1)/15000;
+			this.lambdaLR = Math.log(0.1/initialLearningRate)/-(nrOfIterations/2);
+			this.lambdaAN = Math.log((double)4/initialActiveNeighbours)/-(nrOfIterations/2);
+			this.learningLinearDecrease = (learningRate-0.1)/(nrOfIterations/2);
 		}
-		modActiveNeighbours = ((nrOfIterations/2*activeNLinDecrease)/(initialActiveNeighbours-2));
+		if (this.decayAlternative == LINEAR){
+			modActiveNeighbours = ((nrOfIterations/2*activeNLinDecrease)/(initialActiveNeighbours-2));			
+		}
 		this.cityList = HelpMethods.generateCities(map);
 		this.minMaxLatLong = HelpMethods.findMinMaxLatLong(cityList);
 		this.nauronList = HelpMethods.generateRandomNauronList(numberOfNaurons, minMaxLatLong);
@@ -115,20 +118,21 @@ public class TSP {
 					learningRate-=learningLinearDecrease;
 				}
 				if (iterations%modActiveNeighbours == 0 && activeNeighbours > 2){
-					activeNeighbours-=activeNLinDecrease;	
+					activeNeighbours-=activeNLinDecrease;
 				}
 			}
 			else if(decayAlternative == EXPONENTIAL){
 				if (learningRate > 0.1){
 					learningRate = initialLearningRate*Math.exp(-lambdaLR*iterations);
 				}
-				if (activeNeighbours > 2){
+				if (activeNeighbours > 4){
 					activeNeighbours = (int) (initialActiveNeighbours*Math.exp(-lambdaAN*iterations));
 				}
 			}
 			if (iterations%(nrOfIterations/stepsForPrint)==0){
 				ArrayList<Neuron> finalNeuronList = HelpMethods.findFinalNeurons(cityList, nauronList);
-				HelpMethods.showCurrentMap(finalNeuronList, cityList, scalesForPrint, true);
+				HelpMethods.showCurrentMap(nauronList, cityList, scalesForPrint, false);
+
 				System.out.println("After "+step+"/"+stepsForPrint+" of the total run, the distance is: " +HelpMethods.totalDist(nauronList, cityList));
 				HelpMethods.setAllIsClosestNeuronsToNullForAllNeurons(nauronList);
 				step++;
@@ -151,11 +155,11 @@ public class TSP {
 		int EXPONENTIAL = 2;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Which map you want to run on? (WS, D, Q or U): ");
-		String map = "Q";
+		String map = sc.next();
 		System.out.println("Do you want EXP, LIN or STATIC decay function? Write E, L or S: ");
-		String decay = "L";
+		String decay = sc.next();
 		System.out.println("How often do you want to see the current shortest distance?: ");
-		String step = "10";
+		String step = sc.next();
 		int stepsForPrint = Integer.parseInt(step);
 		if (map.equals("WS")){
 			if (decay.equals("E")){
