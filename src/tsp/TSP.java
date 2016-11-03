@@ -16,13 +16,14 @@ public class TSP {
 	private int activeNeighbours;
 	private double discountRate;
 	private double initialLearningRate;
-	private double initialActiveNeighbours;
+	private int initialActiveNeighbours;
 	private double lambdaLR;
 	private double lambdaAN;
 	private double learningLinearDecrease;
 	private int activeNLinDecrease;
 	private int nrOfIterations;
 	private int stepsForPrint;
+	private int mod;
 	
 	private final int LINEAR = 1;
 	private final int EXPONENTIAL = 2;
@@ -68,8 +69,8 @@ public class TSP {
 		if(map.equals("Qatar.txt")){
 			scalesForPrint = new double[]{0.45,0.45,4,8};
 			numberOfNaurons = 776;
-			this.learningRate = 0.5;
-			this.activeNeighbours = 70;
+			this.learningRate = 0.9;
+			this.activeNeighbours = 210;
 			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
@@ -82,9 +83,9 @@ public class TSP {
 		}
 		if(map.equals("Uruguay.txt")){
 			scalesForPrint = new double[]{0.20,0.12,9,18};
-			numberOfNaurons = 4000;
-			this.learningRate = 0.5;
-			this.activeNeighbours = 48;
+			numberOfNaurons = 3000;
+			this.learningRate = 0.9;
+			this.activeNeighbours = 386;
 			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
@@ -94,7 +95,7 @@ public class TSP {
 			this.activeNLinDecrease = 4;
 			this.nrOfIterations = 30000;
 		}
-		
+		mod = ((nrOfIterations/2*activeNLinDecrease)/(initialActiveNeighbours-2));
 		this.cityList = HelpMethods.generateCities(map);
 		this.minMaxLatLong = HelpMethods.findMinMaxLatLong(cityList);
 		this.nauronList = HelpMethods.generateRandomNauronList(numberOfNaurons, minMaxLatLong);
@@ -110,10 +111,10 @@ public class TSP {
 		int step = 0;
 		while(iterations<nrOfIterations){
 			if (decayAlternative == LINEAR){
-				if (learningRate > 0.1 && iterations%150 == 0){
+				if (learningRate > 0.1 && iterations%(nrOfIterations/200) == 0){
 					learningRate-=learningLinearDecrease;
 				}
-				if (iterations%300 == 0 && activeNeighbours > 2){
+				if (iterations%mod == 0 && activeNeighbours > 2){
 					activeNeighbours-=activeNLinDecrease;	
 				}
 			}
@@ -153,11 +154,11 @@ public class TSP {
 		int EXPONENTIAL = 2;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Which map you want to run on? (WS, D, Q or U): ");
-		String map = sc.next();
+		String map = "U";
 		System.out.println("Do you want EXP, LIN or STATIC decay function? Write E, L or S: ");
-		String decay = sc.next();
+		String decay = "E";
 		System.out.println("How often do you want to see the current shortest distance?: ");
-		String step = sc.next();
+		String step = "10";
 		int stepsForPrint = Integer.parseInt(step);
 		if (map.equals("WS")){
 			if (decay.equals("E")){
