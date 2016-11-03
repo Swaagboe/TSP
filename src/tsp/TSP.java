@@ -111,10 +111,7 @@ public class TSP {
 	
 	public void run() throws Exception{
 		int iterations = 0;
-<<<<<<< HEAD
-=======
 		int step = 0;
->>>>>>> Martin
 		while(iterations<nrOfIterations){
 			if (decayAlternative == LINEAR){
 				if (learningRate > 0.1){
