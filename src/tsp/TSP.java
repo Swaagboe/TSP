@@ -23,7 +23,7 @@ public class TSP {
 	private int activeNLinDecrease;
 	private int nrOfIterations;
 	private int stepsForPrint;
-	private int mod;
+	private int modActiveNeighbours;
 	
 	private final int LINEAR = 1;
 	private final int EXPONENTIAL = 2;
@@ -42,43 +42,43 @@ public class TSP {
 			numberOfNaurons = 150;
 			this.learningRate = 0.5;
 			this.activeNeighbours = 48;
+			this.activeNLinDecrease = 2;
+			this.nrOfIterations = 2000;
 			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
 			this.lambdaLR = Math.log(0.1/initialLearningRate)/-1000;
 			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-1000;
-			this.learningLinearDecrease = 0.00001;
-			this.activeNLinDecrease = 4;
-			this.nrOfIterations = 2000;
+			this.learningLinearDecrease = (learningRate-0.1)/15000;
 		}
 		if(map.equals("Djibouti.txt")){
 			scalesForPrint = new double[]{0.4,0.4,6,12};
 			numberOfNaurons = 150;
 			this.learningRate = 0.2;
 			this.activeNeighbours = 48;
+			this.activeNLinDecrease = 2;
+			this.nrOfIterations = 2000;
 			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
 			this.lambdaLR = Math.log(0.1/initialLearningRate)/-1000;
 			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-1000;
-			this.learningLinearDecrease = 0.00001;
-			this.activeNLinDecrease = 4;
-			this.nrOfIterations = 2000;
+			this.learningLinearDecrease = (learningRate-0.1)/15000;
 
 		}
 		if(map.equals("Qatar.txt")){
 			scalesForPrint = new double[]{0.45,0.45,4,8};
 			numberOfNaurons = 776;
 			this.learningRate = 0.9;
-			this.activeNeighbours = 210;
+			this.activeNeighbours = 50;
+			this.activeNLinDecrease = 2;
+			this.nrOfIterations = 30000;
 			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
 			this.lambdaLR = Math.log(0.1/initialLearningRate)/-15000;
 			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-15000;
 			this.learningLinearDecrease = (learningRate-0.1)/15000;
-			this.activeNLinDecrease = 2;
-			this.nrOfIterations = 30000;
 
 		}
 		if(map.equals("Uruguay.txt")){
@@ -86,16 +86,16 @@ public class TSP {
 			numberOfNaurons = 3000;
 			this.learningRate = 0.9;
 			this.activeNeighbours = 386;
+			this.activeNLinDecrease = 2;
+			this.nrOfIterations = 30000;
 			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
 			this.lambdaLR = Math.log(0.1/initialLearningRate)/-15000;
 			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-15000;
-			this.learningLinearDecrease = 0.007;
-			this.activeNLinDecrease = 4;
-			this.nrOfIterations = 30000;
+			this.learningLinearDecrease = (learningRate-0.1)/15000;
 		}
-		mod = ((nrOfIterations/2*activeNLinDecrease)/(initialActiveNeighbours-2));
+		modActiveNeighbours = ((nrOfIterations/2*activeNLinDecrease)/(initialActiveNeighbours-2));
 		this.cityList = HelpMethods.generateCities(map);
 		this.minMaxLatLong = HelpMethods.findMinMaxLatLong(cityList);
 		this.nauronList = HelpMethods.generateRandomNauronList(numberOfNaurons, minMaxLatLong);
@@ -111,10 +111,10 @@ public class TSP {
 		int step = 0;
 		while(iterations<nrOfIterations){
 			if (decayAlternative == LINEAR){
-				if (learningRate > 0.1 && iterations%(nrOfIterations/200) == 0){
+				if (learningRate > 0.1){
 					learningRate-=learningLinearDecrease;
 				}
-				if (iterations%mod == 0 && activeNeighbours > 2){
+				if (iterations%modActiveNeighbours == 0 && activeNeighbours > 2){
 					activeNeighbours-=activeNLinDecrease;	
 				}
 			}
@@ -134,9 +134,6 @@ public class TSP {
 				step++;
 				
 			}
-			if (iterations%500==0){
-				System.out.println("Nr of iterations: "+iterations);
-			}
 			City city = HelpMethods.pickRandomCity(cityList);//velger random city
 			Neuron nearestNeuron = HelpMethods.findNearestNeuron(city, false);//finner nearmest city
 			HelpMethods.updateLatLongForNeuronAndNeighbours(cityList, nearestNeuron, city, learningRate, activeNeighbours, discountRate);//flytter nauron nearmere by og oppdaterer alle cities med den nye distansen
@@ -154,9 +151,9 @@ public class TSP {
 		int EXPONENTIAL = 2;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Which map you want to run on? (WS, D, Q or U): ");
-		String map = "U";
+		String map = "Q";
 		System.out.println("Do you want EXP, LIN or STATIC decay function? Write E, L or S: ");
-		String decay = "E";
+		String decay = "L";
 		System.out.println("How often do you want to see the current shortest distance?: ");
 		String step = "10";
 		int stepsForPrint = Integer.parseInt(step);
