@@ -154,15 +154,15 @@ public class HelpMethods {
 
 
 	public static void updateLatLongForNeuronAndNeighbours(ArrayList<City> cityList, 
-			Neuron neuron, City city, double rate, int activeNeighbours, double discountRate){
+			Neuron neuron, City city, double learningRate, int activeNeighbours, double discountRate){
 		
-		neuron.updateLatLong(city, rate, cityList);
+		neuron.updateLatLong(city, learningRate, cityList);
 		ArrayList<Neuron> neighbours = neuron.getNeighbours();
 		int x = 0;
 		for (int i = 0; i < activeNeighbours; i++) {
-			neighbours.get(i).updateLatLong(city, rate*discountRate, cityList);
+			neighbours.get(i).updateLatLong(city, learningRate*discountRate, cityList);
 			if (x%2 == 1){
-				rate = rate*discountRate;
+				learningRate = learningRate*discountRate;
 			}
 			x++;
 

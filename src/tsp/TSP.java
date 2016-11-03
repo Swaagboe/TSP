@@ -41,7 +41,7 @@ public class TSP {
 			numberOfNaurons = 150;
 			this.learningRate = 0.5;
 			this.activeNeighbours = 48;
-			this.discountRate = 0.9;
+			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
 			this.lambdaLR = Math.log(0.1/initialLearningRate)/-1000;
@@ -55,7 +55,7 @@ public class TSP {
 			numberOfNaurons = 150;
 			this.learningRate = 0.2;
 			this.activeNeighbours = 48;
-			this.discountRate = 0.9;
+			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
 			this.lambdaLR = Math.log(0.1/initialLearningRate)/-1000;
@@ -68,15 +68,15 @@ public class TSP {
 		if(map.equals("Qatar.txt")){
 			scalesForPrint = new double[]{0.45,0.45,4,8};
 			numberOfNaurons = 776;
-			this.learningRate = 0.9;
-			this.activeNeighbours = 120;
-			this.discountRate = 0.99;
+			this.learningRate = 0.5;
+			this.activeNeighbours = 70;
+			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
 			this.lambdaLR = Math.log(0.1/initialLearningRate)/-15000;
 			this.lambdaAN = Math.log(4/initialActiveNeighbours)/-15000;
-			this.learningLinearDecrease = 0;
-			this.activeNLinDecrease = 4;
+			this.learningLinearDecrease = (learningRate-0.1)/15000;
+			this.activeNLinDecrease = 2;
 			this.nrOfIterations = 30000;
 
 		}
@@ -85,7 +85,7 @@ public class TSP {
 			numberOfNaurons = 4000;
 			this.learningRate = 0.5;
 			this.activeNeighbours = 48;
-			this.discountRate = 0.99;
+			this.discountRate = Math.exp((2/activeNeighbours)*Math.log(0.01));
 			this.initialLearningRate = learningRate;
 			this.initialActiveNeighbours = activeNeighbours;
 			this.lambdaLR = Math.log(0.1/initialLearningRate)/-15000;
@@ -114,7 +114,7 @@ public class TSP {
 					learningRate-=learningLinearDecrease;
 				}
 				if (iterations%300 == 0 && activeNeighbours > 2){
-					activeNeighbours-=activeNLinDecrease;						
+					activeNeighbours-=activeNLinDecrease;	
 				}
 			}
 			else if(decayAlternative == EXPONENTIAL){
