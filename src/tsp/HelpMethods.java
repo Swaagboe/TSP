@@ -31,8 +31,8 @@ public class HelpMethods {
 		for (int i = 0; i < numberOfNaurons; i++) {
 //			randomLatitude = minMaxLatLong[0] + (minMaxLatLong[1] - minMaxLatLong[0]) * r.nextDouble();
 //			randomLongitude = minMaxLatLong[2] + (minMaxLatLong[3] - minMaxLatLong[2]) * r.nextDouble();
-			randomLatitude = minLat-1 + 2*r.nextDouble();
-			randomLongitude = minLong-1 + 2*r.nextDouble();
+			randomLatitude = minLat+2300;
+			randomLongitude = minLong+300;
 //			Neuron n = new Neuron(id, randomLatitude, randomLongitude);
 			Neuron n = new Neuron(id, latCenter, longCenter);
 			nauronList.add(n);
@@ -57,7 +57,7 @@ public class HelpMethods {
 			//50 known neighbours available for each Nauron
 			int forward = i+1;
 			int backward = i-1;
-			for (int j = 0; j < 200; j++) {
+			for (int j = 0; j < nauronList.size(); j++) {
 				if (j%2 == 0){
 					if (forward < nauronList.size()){
 						neighbours.add(nauronList.get(forward));
@@ -154,15 +154,15 @@ public class HelpMethods {
 
 
 	public static void updateLatLongForNeuronAndNeighbours(ArrayList<City> cityList, 
-			Neuron neuron, City city, double rate, int activeNeighbours, double discountRate){
+			Neuron neuron, City city, double learningRate, int activeNeighbours, double discountRate){
 		
-		neuron.updateLatLong(city, rate, cityList);
+		neuron.updateLatLong(city, learningRate, cityList);
 		ArrayList<Neuron> neighbours = neuron.getNeighbours();
 		int x = 0;
 		for (int i = 0; i < activeNeighbours; i++) {
-			neighbours.get(i).updateLatLong(city, rate*discountRate, cityList);
+			neighbours.get(i).updateLatLong(city, learningRate*discountRate, cityList);
 			if (x%2 == 1){
-				rate = rate*discountRate;
+				learningRate = learningRate*discountRate;
 			}
 			x++;
 
@@ -207,6 +207,12 @@ public class HelpMethods {
 //	    	bestNeuron.setLatitude(city.getLongitude());
 	    }
 	    return bestNeuron;
+	}
+	
+	public static void setAllIsClosestNeuronsToNullForAllNeurons(ArrayList<Neuron> neuronList){
+		for (Neuron neuron : neuronList) {
+			neuron.isClosest = null;
+		}
 	}
 	
 	public static void updateIsClosest(ArrayList<City> cities){
@@ -255,7 +261,7 @@ public class HelpMethods {
 	public static void showCurrentMap(ArrayList<Neuron> neurons, ArrayList<City> cities, double[] scalesForPrint, boolean isLastPrint){
 		JFrame testFrame = new JFrame();
 	    testFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		TestGraphics graphic = new TestGraphics(cities, neurons, scalesForPrint, isLastPrint);
+		TSPGraphics graphic = new TSPGraphics(cities, neurons, scalesForPrint, isLastPrint);
 		double[] minMaxLatLong = findMinMaxLatLong(cities);
 	    testFrame.getContentPane().add(graphic, BorderLayout.CENTER);
 
